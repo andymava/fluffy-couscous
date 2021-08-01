@@ -1,32 +1,30 @@
 import feedparser
 import random
-from transformers import pipeline
+from pysentimiento import SentimentAnalyzer
 
-sentiment_analysis = pipeline("sentiment-analysis")
+analyzer = SentimentAnalyzer(lang="es")
 
-feed = feedparser.parse("https://rss.nytimes.com/services/xml/rss/nyt/World.xml")
+feed = feedparser.parse("https://www.bbc.com/mundo/temas/internacional/index.xml")
 
 titles = list()
+
 for entries in feed.entries:
     titles.append(entries.title)
-
-titles = set(titles)
-#print(titles)
-
-positives = list()
-for i in titles:
-    result = sentiment_analysis(i)[0]
-    if result["label"] == "POSITIVE" and result["score"] >= 0.98:
-        positives.append(i)
-       # print(i)
-       # print(result["score"])
-
-#for i in positives:
- #   print(i)
-#def chooseNew():
-#    global positives
-n = random.randint(0, len(positives))
-goodNew = positives[n]
-
-#print(chooseNew())
     
+titles = set(titles)
+
+news = list()
+
+for i in titles:
+    result = analyzer.predict(i)
+    if (result.output == "POS" or result.output == "NEU") and (result.probas["POS"] >= 0.98 or result.probas["NEU"] >= 0.98):
+       news.append(i)
+
+def chooseNew():
+    global news
+    n = random.randint(0, len(news))
+    return news[n]
+
+print(chooseNew())
+    
+
