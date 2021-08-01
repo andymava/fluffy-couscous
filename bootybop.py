@@ -2,7 +2,7 @@ import tweepy
 import datetime
 import random 
 from time import sleep
-from good import goodNew
+from good import chooseNew
 
 
 consumer_key = "9KoTqJIWrcCPthGTcNbXs1dEA"
@@ -31,16 +31,9 @@ def publicdate():
         topublish = "Feliz Sabado."
     if datetime.date.today().weekday() == 6:
          topublish = "Buen Domingo!"
-    
     api.update_status(topublish)
     print(topublish) 
 
-# publicdate()
-
-
-"""trends_result = api.trends_place(1)
-for trend in trends_result[0]["trends"]:
-    print(trend["name"]) """
 
 with open ("acertijos.txt") as file: 
     acertijos = file.read()
@@ -48,7 +41,6 @@ acertijos = acertijos.split('\n')
 with open("respuestas.txt") as file:
     respuestas = file.read()
 respuestas = respuestas.split('\n')
-
 
 def acertijoRand():
     n = random.randint(0, len(acertijos))
@@ -64,6 +56,10 @@ def publicaAcertijo():
     sleep(300)
     api.update_status(res)
 
-publicaAcertijo()
 
-# api.update_status(goodNew)
+
+publicdate()
+sleep(7200)
+publicaAcertijo()
+sleep(3600)
+api.update_status(chooseNew())
