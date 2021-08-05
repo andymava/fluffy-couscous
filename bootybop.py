@@ -2,13 +2,13 @@ import tweepy
 import datetime
 import random 
 from time import sleep
-from good import chooseNew
+from good import good_new
 
 
-consumer_key = "9KoTqJIWrcCPthGTcNbXs1dEA"
-consumer_secret = "pyg1GtiBMN8ZgpbRa8snLwZIUmfehiV8IoCXTfhX2Fon1be9jx"
-acces_token = "860676362-M8olui8Qn6BAJYgFgbAVqiiWJH1ca5H5W1d6rGul"
-acces_token_secret = "NspeJeAyD9qPQCi61mGOkieVwWOIVOniIZP1jOg8NquXk"
+consumer_key = "XXX"
+consumer_secret = "XXX"
+acces_token = "XXX"
+acces_token_secret = "XXX"
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 
@@ -17,49 +17,37 @@ auth.set_access_token(acces_token, acces_token_secret)
 api = tweepy.API(auth)
 
 def publicdate():
-    if datetime.date.today().weekday() == 0:
-        topublish = "Hoy es Lunes! Buen inicio de semana."
-    if datetime.date.today().weekday() == 1:
-        topublish = "Hoy es Martes."
-    if datetime.date.today().weekday() == 2:
-        topublish = "Feliz mitad de semana. Hoy es miercoles."
-    if datetime.date.today().weekday == 3:
-        topublish = "Hoy es Jueves!"
-    if datetime.date.today().weekday() == 4:
-        topublish = "Feliz fin de semana. Hoy es Viernes!"
-    if datetime.date.today().weekday() == 5:
-        topublish = "Feliz Sabado."
-    if datetime.date.today().weekday() == 6:
-         topublish = "Buen Domingo!"
-    api.update_status(topublish)
-    print(topublish) 
+    dias = ['Lunes', 'Martes', 'Miercoles', 'Jueves', 'Viernes', 'Sabado', 'Domingo']
+    hoy = datetime.date.today().weekday()
+    to_publish = "Hoy es " + dias[hoy]
+    api.update_status(to_publish)
+    sleep(3600)
+    # print(to_publish) 
+    # print(datetime.date.today().weekday())
 
-
-with open ("acertijos.txt") as file: 
-    acertijos = file.read()
-acertijos = acertijos.split('\n')
-with open("respuestas.txt") as file:
-    respuestas = file.read()
-respuestas = respuestas.split('\n')
-
-def acertijoRand():
+def acertijos():
+    with open ("acertijos.txt") as file: 
+        acertijos = file.read()
+    acertijos = acertijos.split('\n')
+    with open("respuestas.txt") as file:
+        respuestas = file.read()
+    respuestas = respuestas.split('\n')
     n = random.randint(0, len(acertijos))
-    print(n)
-    print(len(acertijos))
-    return (acertijos[n], respuestas[n])
+    api.update_status(str(acertijos[n]) + "\n\n\n" + str(respuestas[n]))
+    sleep(3600)
+    
 
-def publicaAcertijo():
-    acer, res = acertijoRand()
-    print(acer)
-    print(res)
-    api.update_status(acer)
-    sleep(300)
-    api.update_status(res)
-
+def chistes():
+    with open ("chistes.txt", encoding="utf-8") as file:
+        c = file.read()
+    chiste = c.split("\n")
+    n = random.randint(0, len(chistes))
+    api.status_update(chiste[n])
+    sleep(3600)
 
 
 publicdate()
-sleep(7200)
+acertijos()
 publicaAcertijo()
-sleep(3600)
-api.update_status(chooseNew())
+chistes()
+api.update_status(news)
